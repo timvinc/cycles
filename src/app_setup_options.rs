@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-// #[cfg(feature = "egui")]
 use bevy_egui::egui;
 use clap::{Parser, ValueEnum};
 

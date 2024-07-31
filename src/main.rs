@@ -113,35 +113,36 @@ fn main() {
         apply_platformer_controls.in_set(TnuaUserControlsSystemSet),
     );
     app.add_plugins(LevelMechanicsPlugin);
+    app.add_systems(Update, camera_follow_player);
 
     app.run();
-    // App::new()
-    //     .add_plugins(DefaultPlugins.set(AssetPlugin {
-    //         // Wasm builds will check for meta files (that don't exist) if this isn't set.
-    //         // This causes errors and even panics in web builds on itch.
-    //         // See https://github.com/bevyengine/bevy_github_ci_template/issues/48.
-    //         meta_check: AssetMetaCheck::Never,
-    //         ..default()
-    //     }))
-    //     .add_systems(Startup, setup)
-    //     .run();
 }
 
-// fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-//     commands.spawn(Camera2dBundle::default());
-//     commands.spawn(SpriteBundle {
-//         texture: asset_server.load("ducky.png"),
-//         ..Default::default()
-//     });
-// }
+#[derive(Component)]
+struct CameraFollowPlayer;
+
+fn camera_follow_player(
+    mut camera_query: Query<(&mut Transform, &CameraFollowPlayer), Without<IsPlayer>>,
+    player_query: Query<&Transform, With<IsPlayer>>,
+) {
+    if let Ok(player_transform) = player_query.get_single() {
+        if let Ok((mut camera_transform, _)) = camera_query.get_single_mut() {
+            camera_transform.translation = player_transform.translation;
+            camera_transform.look_at(player_transform.translation, Vec3::Y);
+        }
+    }
+}
 
 fn setup_camera_and_lights(mut commands: Commands) {
-    commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(0.0, 14.0, 30.0)
-            .with_scale((0.05 * Vec2::ONE).extend(1.0))
-            .looking_at(Vec3::new(0.0, 14.0, 0.0), Vec3::Y),
-        ..Default::default()
-    });
+    commands.spawn((
+        Camera2dBundle {
+            transform: Transform::from_xyz(0.0, 14.0, 30.0)
+                .with_scale((0.05 * Vec2::ONE).extend(1.0))
+                .looking_at(Vec3::new(0.0, 14.0, 0.0), Vec3::Y),
+            ..Default::default()
+        },
+        CameraFollowPlayer,
+    ));
 
     commands.spawn(PointLightBundle {
         transform: Transform::from_xyz(5.0, 5.0, 5.0),

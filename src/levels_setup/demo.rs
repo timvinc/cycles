@@ -23,7 +23,7 @@ pub fn setup_level(mut commands: Commands, asset_server: Res<AssetServer>) {
     cmd.insert(SpriteBundle {
         sprite: Sprite {
             custom_size: Some(Vec2::new(128.0, 0.5)),
-            color: css::GRAY.into(),
+            color: css::DARK_GREEN.into(),
             ..Default::default()
         },
         ..Default::default()

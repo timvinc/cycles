@@ -875,6 +875,7 @@ dependencies = [
  "clap",
  "egui_extras",
  "egui_plot",
+ "web-sys",
 ]
 
 [[package]]

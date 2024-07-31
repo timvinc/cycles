@@ -5,7 +5,6 @@ pub struct MovingPlatformPlugin;
 
 impl Plugin for MovingPlatformPlugin {
     fn build(&self, app: &mut App) {
-        // #[cfg(feature = "avian2d")]
         app.add_systems(
             Update,
             MovingPlatform::make_system(
@@ -14,15 +13,6 @@ impl Plugin for MovingPlatformPlugin {
                 },
             ),
         );
-        // #[cfg(feature = "avian3d")]
-        // app.add_systems(
-        //     Update,
-        //     MovingPlatform::make_system(
-        //         |velocity: &mut avian3d::prelude::LinearVelocity, linvel: Vector3| {
-        //             velocity.0 = linvel;
-        //         },
-        //     ),
-        // );
     }
 }
 
